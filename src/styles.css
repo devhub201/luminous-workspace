@@ -524,7 +524,7 @@ h3 { font-size: 13px; font-weight: 600; }
   .chat-empty { min-height: 280px; }
   .chat-empty h2 { font-size: 19px; }
   .voice-page { min-height: calc(100svh - 163px - env(safe-area-inset-bottom)); }
-  .voice-stage .orb { width: 370px; max-width: calc(100% + 40px); margin: -10px 0 -24px; }
+  .voice-stage .orb { width: 320px; max-width: calc(100% + 20px); margin: -10px 0 -24px; }
   .voice-stage h2 { font-size: 19px; }
   .voice-stage > p { line-height: 1.9; }
   .voice-details { padding-top: 19px; gap: 13px; }

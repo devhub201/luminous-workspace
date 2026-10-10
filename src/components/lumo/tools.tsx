@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { ArrowUpRight, Braces, Calculator, Check, Code2, Copy, FileText, Globe, Layers, Search, Smartphone, Upload, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -16,6 +16,19 @@ const tools: Array<{ id: Tool; name: string; description: string; icon: typeof G
 export function ToolsScreen() {
   const [selected, setSelected] = useState<Tool | null>(null); const [filter, setFilter] = useState('All tools'); const [query, setQuery] = useState(''); const [value, setValue] = useState(''); const [result, setResult] = useState(''); const [error, setError] = useState(''); const [loading, setLoading] = useState(false); const fileInput = useRef<HTMLInputElement>(null); const [fileName, setFileName] = useState(''); const [copied, setCopied] = useState(false);
   const tool = tools.find(t => t.id === selected);
+  useEffect(() => {
+    if (!selected) return;
+    const previous = document.activeElement;
+    const trapFocus = (event: KeyboardEvent) => {
+      if (event.key !== 'Tab') return;
+      const controls = Array.from(document.querySelectorAll<HTMLElement>('.tool-modal button:not(:disabled), .tool-modal input, .tool-modal textarea, .tool-modal a[href]'));
+      const first = controls[0]; const last = controls.at(-1);
+      if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last?.focus(); }
+      else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first?.focus(); }
+    };
+    document.addEventListener('keydown', trapFocus);
+    return () => { document.removeEventListener('keydown', trapFocus); if (previous instanceof HTMLElement) previous.focus(); };
+  }, [selected]);
   const open = (id: Tool) => { setSelected(id); setValue(''); setResult(''); setError(''); setCopied(false); setFileName(''); };
   const run = () => { setError(''); try { if (selected === 'calculator') setResult(String(calculate(value))); if (selected === 'code') { const formatted = JSON.stringify(JSON.parse(value), null, 2); setResult(formatted); } } catch (e) { setResult(''); setError(e instanceof Error ? e.message : 'Please check your input.'); } };
   const readFile = async (file: File) => { if (file.size > 2 * 1024 * 1024) { setError('Text files must be under 2 MB.'); return; } if (!/\.(txt|md|json|csv|log|ts|js|py|html|css)$/i.test(file.name)) { setError('Choose a text, Markdown, JSON, CSV, or source-code file. PDF analysis requires setup.'); return; } setLoading(true); setError(''); setFileName(file.name); try { setResult(await file.text()); } catch { setError('This file could not be read.'); } finally { setLoading(false); } };
