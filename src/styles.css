@@ -44,7 +44,7 @@
   --destructive: oklch(.72 .14 34);
   --border: oklch(.255 .02 249);
   --subtle-border: oklch(.215 .016 251);
-  --quiet: oklch(.45 .024 245);
+  --quiet: oklch(.55 .024 245);
   --blue: oklch(.7 .14 253);
   --violet: oklch(.7 .1 294);
   --amber: oklch(.76 .095 76);
@@ -260,7 +260,7 @@ h3 { font-size: 13px; font-weight: 600; }
 .voice-details strong { font-weight: 500; font-size: 11px; }
 .vision-layout { display: grid; grid-template-columns: minmax(0,1fr) 270px; gap: 28px; }
 .camera-workspace { min-width: 0; }
-.camera-preview { position: relative; min-height: 340px; aspect-ratio: 4/3; max-height: 570px; background: var(--rail); border: 1px solid var(--border); border-radius: 6px; overflow: hidden; }
+.camera-preview { position: relative; width: 100%; min-width: 0; min-height: 340px; aspect-ratio: 4/3; max-height: 570px; background: var(--rail); border: 1px solid var(--border); border-radius: 6px; overflow: hidden; }
 .camera-video { position: absolute; width: 100%; height: 100%; object-fit: cover; visibility: hidden; }
 .camera-video.active { visibility: visible; }
 .captured-image { height: 100%; width: 100%; object-fit: contain; position: absolute; inset: 0; }
