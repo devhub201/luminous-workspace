@@ -14,4 +14,10 @@ describe("App routing", () => {
 
     expect(matches.at(-1)?.routeId).not.toBe(rootRouteId);
   });
+  it("connects every LUMO workspace screen", () => {
+    const router = createRouter({ routeTree, context: { queryClient: new QueryClient() } });
+    for (const path of ["/chat", "/voice", "/vision", "/tools", "/settings", "/auth"]) {
+      expect(router.matchRoutes(path).at(-1)?.routeId).toBe(path);
+    }
+  });
 });
