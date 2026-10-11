@@ -47,7 +47,7 @@ export function ChatScreen({ prompt = '', threadId = 'first' }: { prompt?: strin
   const send = ({ text, files }: PromptInputMessage) => {
     if (!conversation || loading) return;
     const next: ChatMessage[] = [...messages, { id: crypto.randomUUID(), role: 'user', parts: [{ type: 'text', text: text.trim() }], attachments: files.map(f => f.filename || 'Attachment') }];
-    chatStore.update(threadId, { messages: next, title: messages.length ? conversation.title : text.trim().split('\n')[0].slice(0, 52), draft: '' });
+    chatStore.update(threadId, { messages: next, title: messages.length ? conversation.title : (text.trim().split('\n')[0] ?? 'New conversation').slice(0, 52), draft: '' });
     void request(next);
   };
   const exportConversation = () => { const blob = new Blob([messages.map(m => `## ${m.role === 'user' ? 'You' : m.demo ? 'LUMO (Demo)' : 'LUMO'}\n\n${messageText(m)}${m.attachments?.length ? '\n\nAttachments (local only): ' + m.attachments.join(', ') : ''}`).join('\n\n')], { type: 'text/markdown' }); const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; a.download = 'lumo-conversation.md'; a.click(); window.setTimeout(() => URL.revokeObjectURL(url), 1000); };
