@@ -16,6 +16,7 @@ import { Route as SettingsRouteImport } from './routes/settings'
 import { Route as ToolsRouteImport } from './routes/tools'
 import { Route as VisionRouteImport } from './routes/vision'
 import { Route as VoiceRouteImport } from './routes/voice'
+import { Route as ChatThreadIdRouteImport } from './routes/chat_.$threadId'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -52,6 +53,11 @@ const VoiceRoute = VoiceRouteImport.update({
   path: '/voice',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ChatThreadIdRoute = ChatThreadIdRouteImport.update({
+  id: '/chat_/$threadId',
+  path: '/chat/$threadId',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -61,6 +67,7 @@ export interface FileRoutesByFullPath {
   '/tools': typeof ToolsRoute
   '/vision': typeof VisionRoute
   '/voice': typeof VoiceRoute
+  '/chat/$threadId': typeof ChatThreadIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -70,6 +77,7 @@ export interface FileRoutesByTo {
   '/tools': typeof ToolsRoute
   '/vision': typeof VisionRoute
   '/voice': typeof VoiceRoute
+  '/chat/$threadId': typeof ChatThreadIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -80,13 +88,29 @@ export interface FileRoutesById {
   '/tools': typeof ToolsRoute
   '/vision': typeof VisionRoute
   '/voice': typeof VoiceRoute
+  '/chat_/$threadId': typeof ChatThreadIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    '/' | '/auth' | '/chat' | '/settings' | '/tools' | '/vision' | '/voice'
+    | '/'
+    | '/auth'
+    | '/chat'
+    | '/settings'
+    | '/tools'
+    | '/vision'
+    | '/voice'
+    | '/chat/$threadId'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/auth' | '/chat' | '/settings' | '/tools' | '/vision' | '/voice'
+  to:
+    | '/'
+    | '/auth'
+    | '/chat'
+    | '/settings'
+    | '/tools'
+    | '/vision'
+    | '/voice'
+    | '/chat/$threadId'
   id:
     | '__root__'
     | '/'
@@ -96,6 +120,7 @@ export interface FileRouteTypes {
     | '/tools'
     | '/vision'
     | '/voice'
+    | '/chat_/$threadId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -106,6 +131,7 @@ export interface RootRouteChildren {
   ToolsRoute: typeof ToolsRoute
   VisionRoute: typeof VisionRoute
   VoiceRoute: typeof VoiceRoute
+  ChatThreadIdRoute: typeof ChatThreadIdRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -159,6 +185,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof VoiceRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/chat_/$threadId': {
+      id: '/chat_/$threadId'
+      path: '/chat/$threadId'
+      fullPath: '/chat/$threadId'
+      preLoaderRoute: typeof ChatThreadIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -170,6 +203,7 @@ const rootRouteChildren: RootRouteChildren = {
   ToolsRoute: ToolsRoute,
   VisionRoute: VisionRoute,
   VoiceRoute: VoiceRoute,
+  ChatThreadIdRoute: ChatThreadIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

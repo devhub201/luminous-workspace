@@ -13,3 +13,6 @@
 - Use the typed host-injected LumoIntegrations boundary for future identity, AI, and vision providers; missing adapters must show unavailable states rather than fabricate results.
 - Save only device appearance preferences in local browser storage; conversations and captures remain in memory for this visit to avoid implying cloud persistence.
 - Render the signature core with a depth-layered, frame-limited Canvas animation; this avoids a WebGL dependency and keeps Android WebView integration lightweight.
+- Chat uses AI Elements for transcript, Markdown, and composition; scoped Chat styles preserve approved shared screens and design tokens.
+- Keep conversation messages and drafts in a visit-only external store with route-derived thread IDs; navigation preserves history without implying durable storage.
+- Host-provider replies are cancellable and bound to the originating conversation; fixed demo replies are labeled and never replayed as AI context.
