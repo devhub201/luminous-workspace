@@ -22,8 +22,23 @@ export function ChatScreen({ prompt = '', threadId = 'first' }: { prompt?: strin
   const [copied, setCopied] = useState('');
   const [connected, setConnected] = useState(false);
   const abort = useRef<AbortController | null>(null);
+  const layout = useRef<HTMLDivElement>(null);
   const messages = conversation?.messages ?? [];
-  useEffect(() => { setConnected(!!getIntegrations().chat); if (prompt && conversation && !conversation.draft) chatStore.update(threadId, { draft: prompt }); return () => abort.current?.abort(); }, [threadId, prompt]);
+  useEffect(() => { setConnected(!!getIntegrations().chat); const current = chatStore.get().find(c => c.id === threadId); if (prompt && current && !current.draft) chatStore.update(threadId, { draft: prompt }); return () => abort.current?.abort(); }, [threadId, prompt]);
+  useEffect(() => {
+    const viewport = window.visualViewport;
+    const resize = () => {
+      const element = layout.current;
+      if (!element || !viewport) return;
+      const keyboardOpen = window.innerHeight - viewport.height > 120;
+      if (!keyboardOpen) { element.style.removeProperty('height'); return; }
+      const top = element.getBoundingClientRect().top;
+      element.style.height = `${Math.max(120, viewport.height + viewport.offsetTop - top - 12)}px`;
+    };
+    viewport?.addEventListener('resize', resize);
+    viewport?.addEventListener('scroll', resize);
+    return () => { viewport?.removeEventListener('resize', resize); viewport?.removeEventListener('scroll', resize); };
+  }, []);
   const open = (id: string) => { abort.current?.abort(); void navigate({ to: '/chat/$threadId', params: { threadId: id } }); };
   const newChat = () => open(chatStore.create());
   const stop = () => { abort.current?.abort(); setLoading(false); setError('Response stopped.'); };
