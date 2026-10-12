@@ -35,7 +35,8 @@ import {
   MessageAction,
 } from "@/components/ai-elements/message";
 import type { PromptInputMessage } from "@/components/ai-elements/prompt-input";
-import { getIntegrations } from "@/lib/lumo/integrations";
+import { getIntegrations, parseMusicRequest } from "@/lib/lumo/integrations";
+import { MusicEmbed } from "./music-embed";
 import {
   chatStore,
   useConversations,
@@ -113,6 +114,32 @@ export function ChatScreen({
         setError(
           "Files are attached locally. File analysis is unavailable; remove attachments or start a text-only conversation.",
         );
+        return;
+      }
+      const last = next[next.length - 1];
+      const musicQuery = last?.role === "user" ? parseMusicRequest(messageText(last)) : null;
+      if (musicQuery) {
+        const music = getIntegrations().music;
+        const state = music ? await music.play(musicQuery, controller.signal) : undefined;
+        if (controller.signal.aborted) return;
+        chatStore.update(threadId, {
+          messages: [
+            ...next,
+            {
+              id: crypto.randomUUID(),
+              role: "assistant",
+              parts: [
+                {
+                  type: "text",
+                  text: state
+                    ? `Playing **${state.track.title}** by ${state.track.artist}.`
+                    : `I can't play **${musicQuery}** yet — Spotify isn't connected.`,
+                },
+              ],
+              music: { query: musicQuery, state },
+            },
+          ],
+        });
         return;
       }
       let response: string;
@@ -368,6 +395,9 @@ export function ChatScreen({
                           </div>
                         )
                       ) : null,
+                    )}
+                    {message.music && (
+                      <MusicEmbed query={message.music.query} initial={message.music.state} />
                     )}
                     {message.attachments?.map((file, index) => (
                       <span className="message-file" key={index}>

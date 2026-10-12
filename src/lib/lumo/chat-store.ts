@@ -1,7 +1,11 @@
 import { useSyncExternalStore } from "react";
 import type { UIMessage } from "ai";
 
-export type ChatMessage = UIMessage & { demo?: boolean; attachments?: string[] };
+export type ChatMessage = UIMessage & {
+  demo?: boolean;
+  attachments?: string[];
+  music?: { query: string; state?: import("./integrations").MusicState };
+};
 export interface ChatConversation {
   id: string;
   title: string;
