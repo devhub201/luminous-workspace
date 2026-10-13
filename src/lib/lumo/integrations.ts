@@ -38,3 +38,32 @@ export function parseMusicRequest(text: string): string | null {
   const match = text.trim().match(/^(?:hey lumo,?\s*)?(?:please\s+)?(?:play|put on|start playing|listen to)\s+(.+?)[.!?]*$/i);
   return match?.[1]?.trim() || null;
 }
+
+/* ---- Workspace & account adapters (host-provided; absent = unavailable) ---- */
+export interface TerminalResult { exitCode: number; stdout: string; stderr: string; durationMs: number }
+export interface LumoTerminalAdapter { run: (command: string, signal: AbortSignal) => Promise<TerminalResult> }
+export interface GitStatus { branch: string; ahead: number; behind: number; changes: Array<{ path: string; status: string }> }
+export interface LumoGitAdapter { status: (signal: AbortSignal) => Promise<GitStatus> }
+export type ConnectionId = 'github' | 'gmail';
+export interface ConnectionStatus { connected: boolean; account?: string | undefined; scopes?: string[] | undefined; repositories?: string[] | undefined }
+/** Backend-confirmed connection state. Tokens never reach the UI. */
+export interface LumoConnectionsAdapter {
+  status: (id: ConnectionId, signal: AbortSignal) => Promise<ConnectionStatus>;
+  connect: (id: ConnectionId, signal: AbortSignal) => Promise<ConnectionStatus>;
+  disconnect: (id: ConnectionId, signal: AbortSignal) => Promise<ConnectionStatus>;
+}
+export interface LumoAccountAdapter {
+  current: (signal: AbortSignal) => Promise<{ email: string; name?: string | undefined } | null>;
+  signIn: (email: string, password: string, signal: AbortSignal) => Promise<{ ok: boolean; message?: string | undefined }>;
+  signUp: (email: string, password: string, signal: AbortSignal) => Promise<{ ok: boolean; message?: string | undefined }>;
+  signOut: () => Promise<void>;
+}
+export interface LumoWorkspaceIntegrations {
+  terminal?: LumoTerminalAdapter;
+  git?: LumoGitAdapter;
+  connections?: LumoConnectionsAdapter;
+  account?: LumoAccountAdapter;
+}
+export function getWorkspaceIntegrations(): LumoWorkspaceIntegrations {
+  return getIntegrations() as LumoWorkspaceIntegrations;
+}
