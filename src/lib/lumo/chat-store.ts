@@ -4,7 +4,7 @@ import type { UIMessage } from "ai";
 export type ChatMessage = UIMessage & {
   demo?: boolean;
   attachments?: string[];
-  music?: { query: string; state?: import("./integrations").MusicState };
+  music?: { query: string; state?: import("./integrations").MusicState | undefined };
 };
 export interface ChatConversation {
   id: string;

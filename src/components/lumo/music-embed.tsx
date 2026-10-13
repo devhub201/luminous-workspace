@@ -9,7 +9,7 @@ const time = (ms: number) => {
 };
 
 /** Live player card. Shows real adapter state only; without an adapter it is an honest unavailable card. */
-export function MusicEmbed({ query, initial }: { query: string; initial?: MusicState }) {
+export function MusicEmbed({ query, initial }: { query: string; initial?: MusicState | undefined }) {
   const [state, setState] = useState<MusicState | undefined>(initial);
   const [position, setPosition] = useState(initial?.positionMs ?? 0);
   const [busy, setBusy] = useState(false);
