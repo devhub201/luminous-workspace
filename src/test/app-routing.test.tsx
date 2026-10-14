@@ -16,8 +16,9 @@ describe("App routing", () => {
   });
   it("connects every LUMO workspace screen", () => {
     const router = createRouter({ routeTree, context: { queryClient: new QueryClient() } });
-    for (const path of ["/chat", "/voice", "/vision", "/tools", "/settings", "/auth"]) {
+    for (const path of ["/chat", "/voice", "/vision", "/tools", "/settings", "/auth", "/workspaces/code", "/workspaces/browser", "/workspaces/files", "/workspaces/study"]) {
       expect(router.matchRoutes(path).at(-1)?.routeId).toBe(path);
     }
+    expect(router.matchRoutes("/workspaces").at(-1)?.routeId).toBe("/workspaces/");
   });
 });
