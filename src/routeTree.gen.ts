@@ -17,6 +17,11 @@ import { Route as ToolsRouteImport } from './routes/tools'
 import { Route as VisionRouteImport } from './routes/vision'
 import { Route as VoiceRouteImport } from './routes/voice'
 import { Route as ChatThreadIdRouteImport } from './routes/chat_.$threadId'
+import { Route as WorkspacesIndexRouteImport } from './routes/workspaces.index'
+import { Route as WorkspacesBrowserRouteImport } from './routes/workspaces.browser'
+import { Route as WorkspacesCodeRouteImport } from './routes/workspaces.code'
+import { Route as WorkspacesFilesRouteImport } from './routes/workspaces.files'
+import { Route as WorkspacesStudyRouteImport } from './routes/workspaces.study'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -58,6 +63,31 @@ const ChatThreadIdRoute = ChatThreadIdRouteImport.update({
   path: '/chat/$threadId',
   getParentRoute: () => rootRouteImport,
 } as any)
+const WorkspacesIndexRoute = WorkspacesIndexRouteImport.update({
+  id: '/workspaces/',
+  path: '/workspaces/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const WorkspacesBrowserRoute = WorkspacesBrowserRouteImport.update({
+  id: '/workspaces/browser',
+  path: '/workspaces/browser',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const WorkspacesCodeRoute = WorkspacesCodeRouteImport.update({
+  id: '/workspaces/code',
+  path: '/workspaces/code',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const WorkspacesFilesRoute = WorkspacesFilesRouteImport.update({
+  id: '/workspaces/files',
+  path: '/workspaces/files',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const WorkspacesStudyRoute = WorkspacesStudyRouteImport.update({
+  id: '/workspaces/study',
+  path: '/workspaces/study',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -68,6 +98,11 @@ export interface FileRoutesByFullPath {
   '/vision': typeof VisionRoute
   '/voice': typeof VoiceRoute
   '/chat/$threadId': typeof ChatThreadIdRoute
+  '/workspaces/browser': typeof WorkspacesBrowserRoute
+  '/workspaces/code': typeof WorkspacesCodeRoute
+  '/workspaces/files': typeof WorkspacesFilesRoute
+  '/workspaces/study': typeof WorkspacesStudyRoute
+  '/workspaces/': typeof WorkspacesIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -78,6 +113,11 @@ export interface FileRoutesByTo {
   '/vision': typeof VisionRoute
   '/voice': typeof VoiceRoute
   '/chat/$threadId': typeof ChatThreadIdRoute
+  '/workspaces/browser': typeof WorkspacesBrowserRoute
+  '/workspaces/code': typeof WorkspacesCodeRoute
+  '/workspaces/files': typeof WorkspacesFilesRoute
+  '/workspaces/study': typeof WorkspacesStudyRoute
+  '/workspaces': typeof WorkspacesIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -89,6 +129,11 @@ export interface FileRoutesById {
   '/vision': typeof VisionRoute
   '/voice': typeof VoiceRoute
   '/chat_/$threadId': typeof ChatThreadIdRoute
+  '/workspaces/browser': typeof WorkspacesBrowserRoute
+  '/workspaces/code': typeof WorkspacesCodeRoute
+  '/workspaces/files': typeof WorkspacesFilesRoute
+  '/workspaces/study': typeof WorkspacesStudyRoute
+  '/workspaces/': typeof WorkspacesIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -101,6 +146,11 @@ export interface FileRouteTypes {
     | '/vision'
     | '/voice'
     | '/chat/$threadId'
+    | '/workspaces/browser'
+    | '/workspaces/code'
+    | '/workspaces/files'
+    | '/workspaces/study'
+    | '/workspaces/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -111,6 +161,11 @@ export interface FileRouteTypes {
     | '/vision'
     | '/voice'
     | '/chat/$threadId'
+    | '/workspaces/browser'
+    | '/workspaces/code'
+    | '/workspaces/files'
+    | '/workspaces/study'
+    | '/workspaces'
   id:
     | '__root__'
     | '/'
@@ -121,6 +176,11 @@ export interface FileRouteTypes {
     | '/vision'
     | '/voice'
     | '/chat_/$threadId'
+    | '/workspaces/browser'
+    | '/workspaces/code'
+    | '/workspaces/files'
+    | '/workspaces/study'
+    | '/workspaces/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -132,6 +192,11 @@ export interface RootRouteChildren {
   VisionRoute: typeof VisionRoute
   VoiceRoute: typeof VoiceRoute
   ChatThreadIdRoute: typeof ChatThreadIdRoute
+  WorkspacesBrowserRoute: typeof WorkspacesBrowserRoute
+  WorkspacesCodeRoute: typeof WorkspacesCodeRoute
+  WorkspacesFilesRoute: typeof WorkspacesFilesRoute
+  WorkspacesStudyRoute: typeof WorkspacesStudyRoute
+  WorkspacesIndexRoute: typeof WorkspacesIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -192,6 +257,41 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ChatThreadIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/workspaces/': {
+      id: '/workspaces/'
+      path: '/workspaces'
+      fullPath: '/workspaces/'
+      preLoaderRoute: typeof WorkspacesIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/workspaces/browser': {
+      id: '/workspaces/browser'
+      path: '/workspaces/browser'
+      fullPath: '/workspaces/browser'
+      preLoaderRoute: typeof WorkspacesBrowserRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/workspaces/code': {
+      id: '/workspaces/code'
+      path: '/workspaces/code'
+      fullPath: '/workspaces/code'
+      preLoaderRoute: typeof WorkspacesCodeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/workspaces/files': {
+      id: '/workspaces/files'
+      path: '/workspaces/files'
+      fullPath: '/workspaces/files'
+      preLoaderRoute: typeof WorkspacesFilesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/workspaces/study': {
+      id: '/workspaces/study'
+      path: '/workspaces/study'
+      fullPath: '/workspaces/study'
+      preLoaderRoute: typeof WorkspacesStudyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -204,6 +304,11 @@ const rootRouteChildren: RootRouteChildren = {
   VisionRoute: VisionRoute,
   VoiceRoute: VoiceRoute,
   ChatThreadIdRoute: ChatThreadIdRoute,
+  WorkspacesBrowserRoute: WorkspacesBrowserRoute,
+  WorkspacesCodeRoute: WorkspacesCodeRoute,
+  WorkspacesFilesRoute: WorkspacesFilesRoute,
+  WorkspacesStudyRoute: WorkspacesStudyRoute,
+  WorkspacesIndexRoute: WorkspacesIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
