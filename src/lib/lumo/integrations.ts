@@ -101,3 +101,30 @@ export interface LumoWorkspaceIntegrations {
 export function getWorkspaceIntegrations(): LumoWorkspaceIntegrations {
   return getIntegrations() as LumoWorkspaceIntegrations;
 }
+
+/* ---- Voice-first and AI browser sessions (host-provided; absent = unavailable) ---- */
+export type VoiceSessionState = 'idle' | 'listening' | 'processing' | 'speaking';
+export interface VoiceEvent { state: VoiceSessionState; transcript?: string | undefined; level?: number | undefined; final?: boolean | undefined }
+/** Hands-free voice: the host owns microphone permission, wake/VAD, STT and TTS. */
+export interface LumoVoiceAdapter {
+  start: (onEvent: (event: VoiceEvent) => void, signal: AbortSignal) => Promise<void>;
+  stop: () => void;
+}
+export type AgentBrowserStatus = 'connecting' | 'idle' | 'navigating' | 'working' | 'completed' | 'error';
+export interface AgentBrowserState {
+  status: AgentBrowserStatus;
+  url?: string | undefined;
+  title?: string | undefined;
+  /** Latest live frame from the agent's browser (object/data URL or stream frame URL). */
+  frame?: string | undefined;
+  task?: string | undefined;
+  message?: string | undefined;
+}
+/** The browser LUMO's agent drives. Every state comes from the real session. */
+export interface LumoAgentBrowserAdapter {
+  connect: (onState: (state: AgentBrowserState) => void, signal: AbortSignal) => Promise<void>;
+  disconnect: () => void;
+}
+export function getSessionIntegrations(): { voice?: LumoVoiceAdapter; agentBrowser?: LumoAgentBrowserAdapter } {
+  return getIntegrations() as { voice?: LumoVoiceAdapter; agentBrowser?: LumoAgentBrowserAdapter };
+}
