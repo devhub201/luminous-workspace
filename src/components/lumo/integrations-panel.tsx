@@ -41,10 +41,10 @@ function Connection({ id }: { id: ConnectionId }) {
       try {
         const next = await adapter[action](id, c.signal);
         setStatus(next);
-        if (action === "connect")
-          next.connected
-            ? toast.success(`${name} connected`)
-            : setError(`${name} authorization was not completed.`);
+        if (action === "connect") {
+          if (next.connected) toast.success(`${name} connected`);
+          else setError(`${name} authorization was not completed.`);
+        }
         if (action === "disconnect" && !next.connected) toast(`${name} disconnected`);
       } catch (e) {
         setError(e instanceof Error ? e.message : `${name} could not be reached.`);
