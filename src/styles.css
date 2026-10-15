@@ -881,3 +881,4 @@ h3 { font-size: 13px; font-weight: 600; }
   .code-grid { grid-template-rows: minmax(200px,1fr) 150px; min-height: 380px; }
 }
 @media (prefers-reduced-motion: reduce) { .spin-slow { animation: none; } .ws-dropzone { transition: none; } }
+@keyframes spin { to { transform: rotate(360deg); } }
