@@ -88,7 +88,8 @@ export function FilesWorkspace() {
   };
   const remove = (id: string) => {
     setFiles((old) => {
-      old.find((f) => f.id === id) && URL.revokeObjectURL(old.find((f) => f.id === id)!.url);
+      const gone = old.find((f) => f.id === id);
+      if (gone) URL.revokeObjectURL(gone.url);
       const next = old.filter((f) => f.id !== id);
       if (selected === id) setSelected(next[0]?.id ?? null);
       return next;
