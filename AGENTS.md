@@ -16,3 +16,5 @@
 - Chat uses AI Elements for transcript, Markdown, and composition; scoped Chat styles preserve approved shared screens and design tokens.
 - Keep conversation messages and drafts in a visit-only external store with route-derived thread IDs; navigation preserves history without implying durable storage.
 - Host-provider replies are cancellable and bound to the originating conversation; fixed demo replies are labeled and never replayed as AI context.
+- Primary navigation is Home, Workspaces, and Settings; task screens live under /workspaces/* (Voice, Vision, Toolkit keep their existing routes and count as workspaces) so the rail never becomes a tool list.
+- Terminal, Git, account, and GitHub/Gmail connections use getWorkspaceIntegrations(); UI shows backend-confirmed state only and never simulated output or tokens.

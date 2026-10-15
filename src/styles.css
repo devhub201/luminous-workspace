@@ -877,7 +877,9 @@ h3 { font-size: 13px; font-weight: 600; }
   .study-clock { font-size: 44px; }
 }
 @media (max-height: 500px) and (orientation: landscape) {
-  .ws-page { padding: 12px 16px 16px 80px; min-height: 0; }
+  .ws-page { padding: 12px 16px 16px; min-height: 0; }
   .code-grid { grid-template-rows: minmax(200px,1fr) 150px; min-height: 380px; }
 }
 @media (prefers-reduced-motion: reduce) { .spin-slow { animation: none; } .ws-dropzone { transition: none; } }
+@keyframes spin { to { transform: rotate(360deg); } }
+@media (max-width: 700px) { .workspace-card { height: auto; min-height: 0; } .workspace-card .tool-card-top { margin-bottom: 14px; } }
